@@ -10,9 +10,9 @@ export default function HomeLayout({
   return (
     <div className="flex flex-col min-h-screen">
       <header className="flex justify-between w-full gap-5 p-3 sticky top-0 z-10 backdrop-blur-md">
-        <a className="">
-          <Link href={'/'}>Slice</Link>
-        </a>
+        
+        <Link href={'/'}>Slice</Link>
+        
         <div className="flex gap-5">
           <a>
               Feature

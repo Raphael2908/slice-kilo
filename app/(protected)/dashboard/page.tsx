@@ -12,8 +12,8 @@ import Form from 'next/form'
 export default async function Dashboard() {
   const supabase = await createClient() 
   const {data: user_data, error: user_error} = await supabase.auth.getUser()
-
-  const {data, error} = await supabase.from('ai_agents').select(`context, phone_number_id, is_enabled, user_id`).eq('user_id', user_data.user?.id)
+  // TO FIX TYPE ANY IN THE FUTURE. Context: Currently, supabase returns type any because of a type issue with how supabase inference works
+  const {data, error} = await supabase.from('ai_agents').select(`context, phone_number_id, is_enabled, user_id, profiles( access_token )`).eq('user_id', user_data.user?.id).returns<any>()
   if(!user_data){
     redirect('/login')
   }
@@ -26,9 +26,11 @@ export default async function Dashboard() {
   return (
     <div className="flex-1 w-full flex flex-col gap-4">
       <h1 className="text-lg font-bold">AI Settings</h1>
-      <Form className=" flex flex-col gap-2" action={ContextForm.bind(null, user_data.user.id)}>
+      <Form className=" flex flex-col gap-2" action={ContextForm.bind(null, user_data.user!.id)}>
           <Label htmlFor="message">Phone number id</Label>
           <Input defaultValue={data[0].phone_number_id} type="number" name="phone_number_id" placeholder="phone" />
+          <Label htmlFor="message">Access Token</Label>
+          <Input defaultValue={data[0].profiles.access_token} type="string" name="access_token" placeholder="access token" />
           <div className="flex items-center space-x-2">
             <Label htmlFor="enable-ai">Enable AI</Label>
             <Switch defaultChecked={data[0].is_enabled} name="is_enabled" id="enable-ai"/>

@@ -21,8 +21,16 @@ export async function POST(request:NextRequest) {
     // if (!user) {
     //     return redirect("/sign-in");
     // } 
-    const { data, error } = await supabase.from('ai_agents').select(`context, phone_number_id`).eq('phone_number_id', phone_number_id)
+    const { data, error } = await supabase.from('ai_agents').select(`context, phone_number_id, profiles(access_token)`).eq('phone_number_id', phone_number_id).returns<any>()
+    if(!data){
+        throw new Error('No ai agent found or something when wrong when querying data')
+    }
     const ai_agent_data = data
+
+    const access_token = data![0].profiles.access_token
+    if(!ai_agent_data){
+        throw new Error('No ai agent found')
+    }
 
     // console.log(body.entry[0].changes[0].value.messages[0])
     // console.log(body.entry[0].changes[0].value.metadata.phone_number_id)
@@ -64,12 +72,14 @@ export async function POST(request:NextRequest) {
             // for (const message of messages.data.reverse()) {
             //   console.log(`${message.role} > ${message.content[0].text.value}`);
             // }
-            console.log(messages.data[0].content[0].text.value)
-            data.text.body = messages.data[0].content[0].text.value
+            // Check type of content
+            if(messages.data[0].content[0].type === 'text'){
+                console.log(messages.data[0].content[0].text.value)
+                data.text.body = messages.data[0].content[0].text.value
+            }
             } else {
             console.log(run.status);
         }
-        const access_token = 'EAAPr61MeXHABOZCEIVzb53S907B1mlSGcbI4m1dtKD5iX4Idg4PpDr5eZBPeObmfB5SPNUpR733BrDcWzZArl9UibGzk5uFZBD8tQoTNs9hXBt1YHOvoZBBZClK98thRyauwnkLUqmC66MFKw2Pip26ZBpraq6I4uZAiiAMZCc6cFjynTyRkcdzOcBFll2ZAdzZAuNwMfh3J7pOib7bHSSk5zxlLO5KMBgZD'
         await fetch('https://graph.facebook.com/v21.0/505011889362703/messages', {method: 'POST',headers: {
             'Authorization': `Bearer ${access_token}`,
             'Content-Type': 'application/json'
