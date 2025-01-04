@@ -69,7 +69,7 @@ export async function POST(request:NextRequest) {
             } else {
             console.log(run.status);
         }
-        const access_token = 'EAAPr61MeXHABOxPd4mt3OMIug2mcJH6r8J6APZATsu0NP3CO65krHCGvfkcfuYP4bxuOsDShtR3oU6fCi6nsCAo4VAljIFt6ZAktZA5ZCaiuCy4X6HkTbxyhtFVZBjyFglFsJ4PrC8b2bF3ARFxfhLga7vG4oWescUcqYeHoxPHKgwq9TcdAMm6mFSgzXCWbBsiWmyGzK1PNr7nlZALqeH4nEsRtgZD'
+        const access_token = 'EAAPr61MeXHABOZCEIVzb53S907B1mlSGcbI4m1dtKD5iX4Idg4PpDr5eZBPeObmfB5SPNUpR733BrDcWzZArl9UibGzk5uFZBD8tQoTNs9hXBt1YHOvoZBBZClK98thRyauwnkLUqmC66MFKw2Pip26ZBpraq6I4uZAiiAMZCc6cFjynTyRkcdzOcBFll2ZAdzZAuNwMfh3J7pOib7bHSSk5zxlLO5KMBgZD'
         await fetch('https://graph.facebook.com/v21.0/505011889362703/messages', {method: 'POST',headers: {
             'Authorization': `Bearer ${access_token}`,
             'Content-Type': 'application/json'

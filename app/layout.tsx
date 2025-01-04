@@ -10,7 +10,7 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Kilo",
+  title: "Slice",
   description: "AI Automated systems for what'sapp",
 };
 
